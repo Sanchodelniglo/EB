@@ -4,7 +4,8 @@ const CONFIG = {
   ANIMATION_DELAY: 100,
   TESTIMONIAL_INTERVAL: 5000,
   FORM_SUBMIT_DELAY: 4000,
-  FORMSPREE_URL: 'https://formspree.io/f/xrbkbkeb'
+  FORMSPREE_URL: 'https://formspree.io/f/xrbkbkeb',
+  LAZY_LOAD_MARGIN: '50px 0px'
 };
 
 // Services data
@@ -121,7 +122,7 @@ const testimonialsData = [
     location: "La Teste, Gironde"
   },
   {
-    content: "La rénovation de notre cloture était un projet ambitieux, mais l'équipe d'Élégance Bois a relevé le défi avec brio. Leur expertise et leur professionnalisme nous ont convaincus dès le premier contact.",
+    content: "La rénovation de notre clôture était un projet ambitieux, mais l'équipe d'Élégance Bois a relevé le défi avec brio. Leur expertise et leur professionnalisme nous ont convaincus dès le premier contact.",
     author: "Jean-Pierre Brun",
     location: "Saint-Jean d'Illac, Gironde"
   },
@@ -302,7 +303,9 @@ class DynamicContentManager {
     this.data.services.forEach(service => {
       const card = utils.createElement('div', 'service-card');
       card.innerHTML = `
-        <div class="service-image" data-src="${service.image}"></div>
+        <div class="service-image-wrapper">
+          <div class="service-image" data-src="${service.image}"></div>
+        </div>
         <div class="service-content">
           <h3>${service.title}</h3>
           <p>${service.description}</p>
@@ -404,6 +407,8 @@ class PortfolioModal {
     this.portfolio = data.portfolio;
     this.currentIndex = 0;
     this.filteredPortfolio = [...this.portfolio];
+    this.focusableElements = null;
+    this.previousActiveElement = null;
     this.initElements();
     this.bindEvents();
   }
@@ -443,10 +448,17 @@ class PortfolioModal {
       const actions = {
         'Escape': () => this.closeModal(),
         'ArrowLeft': () => this.navigate(-1),
-        'ArrowRight': () => this.navigate(1)
+        'ArrowRight': () => this.navigate(1),
+        'Tab': () => this.handleTabKey(e)
       };
 
-      actions[e.key]?.();
+      if (actions[e.key]) {
+        if (e.key === 'Tab') {
+          actions[e.key]();
+        } else {
+          actions[e.key]();
+        }
+      }
     });
 
     // Backdrop click
@@ -457,7 +469,28 @@ class PortfolioModal {
     });
   }
 
+  handleTabKey(e) {
+    const focusableSelectors = 'button:not(:disabled), [href], [tabindex]:not([tabindex="-1"])';
+    this.focusableElements = Array.from(this.modal.querySelectorAll(focusableSelectors));
+
+    if (this.focusableElements.length === 0) return;
+
+    const firstElement = this.focusableElements[0];
+    const lastElement = this.focusableElements[this.focusableElements.length - 1];
+
+    if (e.shiftKey && document.activeElement === firstElement) {
+      e.preventDefault();
+      lastElement.focus();
+    } else if (!e.shiftKey && document.activeElement === lastElement) {
+      e.preventDefault();
+      firstElement.focus();
+    }
+  }
+
   openModal(index) {
+    // Store current focus to restore later
+    this.previousActiveElement = document.activeElement;
+
     // Update filtered portfolio based on current filter
     const currentFilter = document.querySelector('.filter-btn.active')?.getAttribute('data-filter') || 'all';
     this.filteredPortfolio = currentFilter === 'all'
@@ -468,11 +501,17 @@ class PortfolioModal {
     this.updateModalContent();
     this.modal.classList.add('active');
     document.body.style.overflow = 'hidden';
+
+    // Focus the close button for accessibility
+    setTimeout(() => this.closeBtn?.focus(), 100);
   }
 
   closeModal() {
     this.modal.classList.remove('active');
     document.body.style.overflow = '';
+
+    // Restore focus to the element that opened the modal
+    this.previousActiveElement?.focus();
   }
 
   navigate(direction) {
@@ -496,6 +535,7 @@ class PortfolioModal {
     };
     img.src = item.image;
 
+    this.modalImage.alt = `${item.title} - ${item.location}`;
     this.modalTitle.textContent = item.title;
     this.modalLocation.textContent = item.location;
 
@@ -587,7 +627,7 @@ class FormHandler {
     );
 
     if (!isValid) {
-      alert('Veuillez remplir tous les champs obligatoires.');
+      this.showError('Veuillez remplir tous les champs obligatoires.');
       return;
     }
 
@@ -646,11 +686,13 @@ class ScrollAnimationHandler {
   }
 
   setupInitialStyles() {
-    this.sections.forEach(section => {
+    this.sections.forEach((section, index) => {
       section.style.cssText = `
         opacity: 0;
-        transform: translateY(25px);
-        transition: opacity 0.8s ease, transform 0.8s ease;
+        transform: translateY(30px);
+        transition: opacity 0.8s cubic-bezier(0.19, 1, 0.22, 1),
+                    transform 0.8s cubic-bezier(0.19, 1, 0.22, 1);
+        transition-delay: ${index * 0.05}s;
       `;
     });
   }
@@ -660,13 +702,16 @@ class ScrollAnimationHandler {
       entries => {
         entries.forEach(entry => {
           if (entry.isIntersecting) {
-            entry.target.style.opacity = '1';
-            entry.target.style.transform = 'translateY(0)';
+            // Small delay for smoother sequential animations
+            requestAnimationFrame(() => {
+              entry.target.style.opacity = '1';
+              entry.target.style.transform = 'translateY(0)';
+            });
             observer.unobserve(entry.target);
           }
         });
       },
-      { threshold: 0.1, rootMargin: '-25px' }
+      { threshold: 0.1, rootMargin: '-50px' }
     );
 
     this.sections.forEach(section => observer.observe(section));
@@ -703,19 +748,7 @@ class App {
   }
 
   optimizePerformance() {
-    // Preload critical images
-    const criticalImages = ['img/header.webp', 'img/logo-elegance-bois.webp'];
-    criticalImages.forEach(src => {
-      const link = document.createElement('link');
-      link.rel = 'preload';
-      link.as = 'image';
-      link.href = src;
-      document.head.appendChild(link);
-    });
-
-    // Enable passive event listeners for scroll performance
-    document.addEventListener('touchstart', () => { }, { passive: true });
-    document.addEventListener('wheel', () => { }, { passive: true });
+    // Note: Critical images are preloaded in HTML <head> for optimal performance
   }
 }
 

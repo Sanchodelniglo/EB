@@ -1,68 +1,26 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
-        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-        xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9
-        http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
     <!-- Page d'accueil -->
     <url>
         <loc>https://elegance-bois.fr/</loc>
-        <lastmod>2025-06-18</lastmod>
+        <lastmod>2025-12-03</lastmod>
         <changefreq>weekly</changefreq>
         <priority>1.0</priority>
     </url>
 
-    <!-- Section À propos -->
+    <!-- Mentions légales -->
     <url>
-        <loc>https://elegance-bois.fr/#a-propos</loc>
-        <lastmod>2025-06-18</lastmod>
-        <changefreq>monthly</changefreq>
-        <priority>0.8</priority>
-    </url>
-
-    <!-- Section Services -->
-    <url>
-        <loc>https://elegance-bois.fr/#services</loc>
-        <lastmod>2025-06-18</lastmod>
-        <changefreq>monthly</changefreq>
-        <priority>0.9</priority>
-    </url>
-
-    <!-- Section Réalisations/Portfolio -->
-    <url>
-        <loc>https://elegance-bois.fr/#portfolio</loc>
-        <lastmod>2025-06-18</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.8</priority>
-    </url>
-
-    <!-- Section Témoignages -->
-    <url>
-        <loc>https://elegance-bois.fr/#temoignages</loc>
-        <lastmod>2025-06-18</lastmod>
-        <changefreq>monthly</changefreq>
-        <priority>0.7</priority>
-    </url>
-
-    <!-- Section Contact -->
-    <url>
-        <loc>https://elegance-bois.fr/#contact</loc>
-        <lastmod>2025-06-18</lastmod>
-        <changefreq>monthly</changefreq>
-        <priority>0.9</priority>
-    </url>
-
-    <!-- Pages légales (si elles existent) -->
-    <url>
-        <loc>https://elegance-bois.fr/mentions-legales</loc>
-        <lastmod>2025-06-18</lastmod>
+        <loc>https://elegance-bois.fr/mentions-legales.html</loc>
+        <lastmod>2025-12-03</lastmod>
         <changefreq>yearly</changefreq>
         <priority>0.3</priority>
     </url>
 
+    <!-- Politique de confidentialité -->
     <url>
-        <loc>https://elegance-bois.fr/politique-confidentialite</loc>
-        <lastmod>2025-06-18</lastmod>
+        <loc>https://elegance-bois.fr/politique-confidentialite.html</loc>
+        <lastmod>2025-12-03</lastmod>
         <changefreq>yearly</changefreq>
         <priority>0.3</priority>
     </url>
