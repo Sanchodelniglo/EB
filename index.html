@@ -93,7 +93,7 @@
       <div class="header-inner">
         <a href="/" class="logo" aria-label="Élégance Bois - Accueil">
           <img src="img/logo-elegance-bois.webp" alt="Logo Élégance Bois"
-            width="117" height="61">
+            width="117" height="61" decoding="async">
         </a>
 
         <button class="menu-toggle" aria-label="Ouvrir le menu"
@@ -151,7 +151,9 @@
               alt="Logo Élégance Bois"
               width="290"
               height="150"
-              loading="eager">
+              loading="eager"
+              fetchpriority="high"
+              decoding="async">
             <h1>Élégance Bois <span class="visually-hidden">- Artisan menuisier en Gironde</span></h1>
             <p class="hero-tagline">Le bois sur mesure, l'élégance accessible.</p>
             <p>Spécialiste de la clôture et des terrasses sur mesure en Gironde.
@@ -234,7 +236,7 @@
           aria-label="Fermer">&times;</button>
         <div class="modal-content">
           <div class="modal-image-container">
-            <img class="modal-image" id="modalImage" alt>
+            <img class="modal-image" id="modalImage" alt="Image du portfolio" decoding="async">
           </div>
           <div class="modal-controls">
             <button class="modal-nav-btn" id="prevBtn"
@@ -279,27 +281,29 @@
           <div class="contact-form">
             <form id="contactForm" action="https://formspree.io/f/xrbkbkeb"
               method="POST">
+              <!-- Honeypot field for spam protection -->
+              <input type="text" name="_gotcha" style="display:none" tabindex="-1" autocomplete="off">
               <div class="form-group">
                 <label for="name" class="form-label">Nom complet *</label>
                 <input type="text" id="name" name="name" class="form-input"
-                  required aria-required="true">
+                  required aria-required="true" autocomplete="name">
               </div>
               <div class="form-group">
                 <label for="email" class="form-label">Email *</label>
                 <input type="email" id="email" name="email" class="form-input"
-                  required aria-required="true">
+                  required aria-required="true" autocomplete="email">
               </div>
               <div class="form-group">
                 <label for="phone" class="form-label">Téléphone *</label>
                 <input type="tel" id="phone" name="phone" class="form-input"
-                  required aria-required="true">
+                  required aria-required="true" autocomplete="tel">
               </div>
               <div class="form-group">
                 <label for="service" class="form-label">Service demandé
                   *</label>
                 <select id="service" name="service" class="form-input" required
-                  aria-required="true">
-                  <option value>Sélectionnez un service</option>
+                  aria-required="true" autocomplete="off">
+                  <option value="">Sélectionnez un service</option>
                   <option value="Clôture">Clôture</option>
                   <option value="Terrasse">Terrasse</option>
                   <option value="Pergola">Pergola</option>
@@ -311,7 +315,7 @@
                 <label for="message" class="form-label">Message *</label>
                 <textarea id="message" name="message"
                   class="form-input form-textarea" required
-                  aria-required="true"></textarea>
+                  aria-required="true" autocomplete="off" minlength="10"></textarea>
               </div>
               <button type="submit" class="btn-submit">Envoyer ma
                 demande</button>
