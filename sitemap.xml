@@ -9,20 +9,4 @@
         <priority>1.0</priority>
     </url>
 
-    <!-- Mentions légales -->
-    <url>
-        <loc>https://elegance-bois.fr/mentions-legales.html</loc>
-        <lastmod>2025-12-03</lastmod>
-        <changefreq>yearly</changefreq>
-        <priority>0.3</priority>
-    </url>
-
-    <!-- Politique de confidentialité -->
-    <url>
-        <loc>https://elegance-bois.fr/politique-confidentialite.html</loc>
-        <lastmod>2025-12-03</lastmod>
-        <changefreq>yearly</changefreq>
-        <priority>0.3</priority>
-    </url>
-
 </urlset>
