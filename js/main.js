@@ -244,7 +244,6 @@
 
     init() {
       this.menuToggle?.addEventListener('click', () => this.toggleMenu());
-      window.addEventListener('scroll', utils.throttle(() => this.handleScroll(), 100));
       this.setupSmoothScrolling();
     }
 
@@ -263,12 +262,6 @@
       this.nav?.classList.remove('active');
       this.body?.classList.remove('no-scroll');
       this.menuToggle?.setAttribute('aria-expanded', 'false');
-    }
-
-    handleScroll() {
-      if (!this.header) return;
-      const scrolled = window.scrollY > CONFIG.SCROLL_THRESHOLD;
-      this.header.classList.toggle('scrolled', scrolled);
     }
 
     setupSmoothScrolling() {
