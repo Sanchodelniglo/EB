@@ -91,7 +91,7 @@ section {
 
 .section-title {
   position: relative;
-  font-size: 2.5rem;
+  font-size: clamp(1.75rem, 4vw + 0.5rem, 2.5rem);
   margin-bottom: 3rem;
   text-align: center;
   color: var(--color-wood-dark);
@@ -113,18 +113,16 @@ header {
   height: 65px;
   z-index: 1000;
   transition:
-    opacity 0.4s var(--ease-out-cubic),
     background-color 0.4s var(--ease-out-cubic),
     box-shadow 0.4s var(--ease-out-cubic);
   color: rgba(255, 255, 255, 0.95);
-  opacity: 0;
+  background-color: transparent;
 }
 
 header.scrolled {
   background-color: rgba(255, 255, 255, 0.95);
   box-shadow: 0 2px 20px rgba(0, 0, 0, 0.08);
   color: var(--color-wood);
-  opacity: 1;
 }
 
 .header-inner {
@@ -299,14 +297,14 @@ nav a:hover::after {
 }
 
 .hero h1 {
-  font-size: 3.5rem;
+  font-size: clamp(2rem, 6vw + 0.5rem, 3.5rem);
   margin-bottom: 0.5rem;
   text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.5);
 }
 
 .hero-tagline {
   font-family: var(--font-serif);
-  font-size: 1.8rem;
+  font-size: clamp(1.2rem, 3vw + 0.3rem, 1.8rem);
   font-style: italic;
   margin-bottom: 1.5rem;
   text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.5);
@@ -1086,11 +1084,11 @@ footer {
   padding-top: 2rem;
   text-align: center;
   font-size: 0.9rem;
-  color: #aaa;
+  color: #c5c5c5;
 }
 
 .footer-bottom a {
-  color: #aaa;
+  color: #c5c5c5;
   transition: color var(--transition-default);
 }
 
@@ -1202,6 +1200,36 @@ footer {
   border: 0;
 }
 
+/* Focus indicators for accessibility */
+.filter-btn:focus-visible,
+.portfolio-item:focus-visible,
+.slider-dot:focus-visible,
+.service-card:focus-visible {
+  outline: 3px solid var(--color-wood-light);
+  outline-offset: 2px;
+}
+
+nav a:focus-visible {
+  outline: 2px solid var(--color-wood-light);
+  outline-offset: 4px;
+  border-radius: 2px;
+}
+
+.facebook-icon:focus-visible,
+.insta-icon:focus-visible,
+.facebook-icon-nav:focus-visible,
+.insta-icon-nav:focus-visible {
+  outline: 2px solid var(--color-wood-light);
+  outline-offset: 2px;
+}
+
+.btn-primary:focus-visible,
+.btn-submit:focus-visible,
+.back-link:focus-visible {
+  outline: 3px solid var(--color-wood-light);
+  outline-offset: 2px;
+}
+
 /* ===== Media Queries ===== */
 @media (max-width: 1024px) {
   .about-content {
@@ -1219,10 +1247,6 @@ footer {
 }
 
 @media (max-width: 768px) {
-  html {
-    font-size: 14px;
-  }
-
   section {
     padding: var(--section-padding-mobile);
   }
@@ -1265,20 +1289,25 @@ footer {
   }
 
   /* Hero Mobile */
-  .hero h1 {
-    font-size: 2.5rem;
-  }
-
   .hero p {
     font-size: 1.1rem;
   }
 
-  .section-title {
-    font-size: 2rem;
-  }
-
   .services-cta {
     max-width: 100%;
+  }
+
+  /* Portfolio overlay always visible on touch devices */
+  .portfolio-overlay {
+    opacity: 1;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.85) 0%, rgba(0, 0, 0, 0.4) 50%, transparent 100%);
+    justify-content: flex-end;
+    padding-bottom: 1.5rem;
+  }
+
+  .portfolio-overlay h3,
+  .portfolio-overlay p {
+    transform: translateY(0);
   }
 
   /* Modal Mobile */
@@ -1316,10 +1345,6 @@ footer {
     padding: 2rem 5%;
   }
 
-  .hero h1 {
-    font-size: 2rem;
-  }
-
   .hero-bg {
     background-image: url('img/terrasse-piscine.webp');
   }
@@ -1330,7 +1355,7 @@ footer {
   }
 
   .filter-btn {
-    padding: 0.4rem 1rem;
+    padding: 0.5rem 1.2rem;
     font-size: 0.9rem;
   }
 
