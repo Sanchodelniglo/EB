@@ -1,0 +1,177 @@
+name: Build, Optimize & Deploy
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: |
+          npm init -y
+          npm install --save-dev \
+            cssnano \
+            postcss \
+            postcss-cli \
+            terser \
+            html-minifier-terser
+
+      - name: Create build directory
+        run: mkdir -p dist
+
+      - name: Minify CSS
+        run: |
+          npx postcss styles.css -o dist/styles.css --use cssnano --no-map
+          echo "CSS minified: $(wc -c < styles.css) -> $(wc -c < dist/styles.css) bytes"
+
+      - name: Minify JavaScript
+        run: |
+          npx terser js/main.js -o dist/main.js -c -m --comments false
+          echo "JS minified: $(wc -c < js/main.js) -> $(wc -c < dist/main.js) bytes"
+
+      - name: Minify HTML files
+        run: |
+          for file in *.html; do
+            npx html-minifier-terser "$file" \
+              --collapse-whitespace \
+              --remove-comments \
+              --remove-optional-tags \
+              --remove-redundant-attributes \
+              --remove-script-type-attributes \
+              --remove-tag-whitespace \
+              --use-short-doctype \
+              --minify-css true \
+              --minify-js true \
+              -o "dist/$file"
+            echo "HTML minified: $file"
+          done
+
+      - name: Update asset references in HTML
+        run: |
+          for file in dist/*.html; do
+            # Update CSS reference
+            sed -i 's|href="styles.css"|href="styles.css"|g' "$file"
+            # Update JS reference
+            sed -i 's|src="js/main.js"|src="main.js"|g' "$file"
+          done
+
+      - name: Copy static assets
+        run: |
+          cp -r img dist/
+          cp robots.txt dist/
+          cp sitemap.xml dist/
+          cp CNAME dist/ 2>/dev/null || true
+
+      - name: Generate asset hashes for cache busting
+        run: |
+          CSS_HASH=$(sha256sum dist/styles.css | cut -c1-8)
+          JS_HASH=$(sha256sum dist/main.js | cut -c1-8)
+
+          # Rename files with hash
+          mv dist/styles.css "dist/styles.${CSS_HASH}.css"
+          mv dist/main.js "dist/main.${JS_HASH}.js"
+
+          # Update references in HTML
+          for file in dist/*.html; do
+            sed -i "s|styles.css|styles.${CSS_HASH}.css|g" "$file"
+            sed -i "s|main.js|main.${JS_HASH}.js|g" "$file"
+          done
+
+          echo "CSS hash: $CSS_HASH"
+          echo "JS hash: $JS_HASH"
+
+      - name: Create _headers file for Netlify/Cloudflare
+        run: |
+          cat > dist/_headers << 'EOF'
+          # Cache static assets for 1 year
+          /img/*
+            Cache-Control: public, max-age=31536000, immutable
+
+          /styles.*.css
+            Cache-Control: public, max-age=31536000, immutable
+
+          /main.*.js
+            Cache-Control: public, max-age=31536000, immutable
+
+          # HTML pages - revalidate every time
+          /*.html
+            Cache-Control: public, max-age=0, must-revalidate
+
+          /
+            Cache-Control: public, max-age=0, must-revalidate
+
+          # Security headers
+          /*
+            X-Content-Type-Options: nosniff
+            X-Frame-Options: DENY
+            X-XSS-Protection: 1; mode=block
+            Referrer-Policy: strict-origin-when-cross-origin
+            Permissions-Policy: geolocation=(), microphone=(), camera=()
+          EOF
+
+      - name: Build summary
+        run: |
+          echo "## Build Summary" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### File Sizes" >> $GITHUB_STEP_SUMMARY
+          echo "| File | Original | Minified | Savings |" >> $GITHUB_STEP_SUMMARY
+          echo "|------|----------|----------|---------|" >> $GITHUB_STEP_SUMMARY
+
+          ORIG_CSS=$(wc -c < styles.css)
+          MIN_CSS=$(wc -c < dist/styles.*.css)
+          SAVE_CSS=$((100 - (MIN_CSS * 100 / ORIG_CSS)))
+          echo "| CSS | ${ORIG_CSS}B | ${MIN_CSS}B | ${SAVE_CSS}% |" >> $GITHUB_STEP_SUMMARY
+
+          ORIG_JS=$(wc -c < js/main.js)
+          MIN_JS=$(wc -c < dist/main.*.js)
+          SAVE_JS=$((100 - (MIN_JS * 100 / ORIG_JS)))
+          echo "| JS | ${ORIG_JS}B | ${MIN_JS}B | ${SAVE_JS}% |" >> $GITHUB_STEP_SUMMARY
+
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### Image Sizes" >> $GITHUB_STEP_SUMMARY
+          du -h dist/img/*.webp dist/img/*.jpg 2>/dev/null | while read size file; do
+            echo "- $file: $size" >> $GITHUB_STEP_SUMMARY
+          done
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v4
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist
+
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    needs: build
+    if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
