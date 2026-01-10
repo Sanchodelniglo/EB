@@ -118,8 +118,8 @@ header {
   width: 100%;
   height: 65px;
   z-index: 1000;
-  background-color: rgba(255, 255, 255, 0.95);
-  box-shadow: 0 2px 20px rgba(0, 0, 0, 0.08);
+  background-color: var(--color-cream);
+  box-shadow: 0 1px 0 rgba(139, 69, 19, 0.1), 0 4px 20px rgba(0, 0, 0, 0.06);
   color: var(--color-wood);
 }
 
@@ -140,8 +140,8 @@ header {
 
 .logo img {
   height: 95%;
-  border: 2px solid rgba(255, 255, 255, 0.95);
-  background-color: rgba(255, 255, 255, 0.95);
+  border: 2px solid var(--color-cream);
+  background-color: var(--color-cream);
 }
 
 /* Navigation */
@@ -154,29 +154,17 @@ nav ul {
 
 nav a {
   position: relative;
-  font-weight: 700;
+  font-weight: 600;
   padding: 0.5rem 0;
   transition: color var(--transition-default);
   color: var(--color-wood-dark);
-}
-
-nav a::after {
-  content: '';
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  width: 0;
-  height: 2px;
-  background-color: var(--color-wood);
-  transition: width var(--transition-default);
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  font-size: 0.8rem;
 }
 
 nav a:hover {
   color: var(--color-wood-light);
-}
-
-nav a:hover::after {
-  width: 100%;
 }
 
 /* Social Icons in Navigation */
@@ -186,53 +174,66 @@ nav a:hover::after {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 30px;
-  height: 30px;
-  border-radius: 50%;
-  background-color: var(--color-wood-dark);
-  transition: background-color var(--transition-default);
-}
-
-.facebook-icon-nav:hover,
-.insta-icon-nav:hover,
-.linkedin-icon-nav:hover {
-  background-color: var(--color-wood-light);
+  width: 28px;
+  height: 28px;
 }
 
 .facebook-icon-nav svg,
 .insta-icon-nav svg,
 .linkedin-icon-nav svg {
-  width: 24px;
-  height: 24px;
-  fill: var(--color-white);
+  width: 20px;
+  height: 20px;
+  fill: var(--color-wood-dark);
   transition: fill var(--transition-default);
 }
 
 .facebook-icon-nav:hover svg,
 .insta-icon-nav:hover svg,
 .linkedin-icon-nav:hover svg {
-  fill: var(--color-wood-dark);
+  fill: var(--color-wood-light);
 }
 
 /* Mobile Menu Toggle */
 .menu-toggle {
   display: none;
-  flex-direction: column;
-  justify-content: space-between;
-  width: 2rem;
-  height: 1.5rem;
+  position: relative;
+  justify-content: center;
+  align-items: center;
+  width: 44px;
+  height: 44px;
   z-index: 1000;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: background-color var(--transition-default);
+}
+
+.menu-toggle:hover {
+  background-color: rgba(139, 69, 19, 0.08);
 }
 
 .menu-toggle span {
+  position: absolute;
   display: block;
+  width: 26px;
   height: 3px;
-  background-color: var(--color-wood-light);
-  transition: all var(--transition-default);
+  background-color: var(--color-wood-dark);
+  border-radius: 2px;
+  transition:
+    transform 0.3s var(--ease-out-cubic),
+    opacity 0.2s var(--ease-out-cubic),
+    background-color var(--transition-default);
+}
+
+.menu-toggle span:nth-child(1) {
+  transform: translateY(-8px);
+}
+
+.menu-toggle span:nth-child(3) {
+  transform: translateY(8px);
 }
 
 .menu-toggle.active span:nth-child(1) {
-  transform: rotate(45deg) translate(8px, 8px);
+  transform: rotate(45deg);
 }
 
 .menu-toggle.active span:nth-child(2) {
@@ -240,7 +241,7 @@ nav a:hover::after {
 }
 
 .menu-toggle.active span:nth-child(3) {
-  transform: rotate(-45deg) translate(5px, -5px);
+  transform: rotate(-45deg);
 }
 
 /* ===== Hero Section ===== */
