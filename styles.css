@@ -1392,6 +1392,57 @@ nav a:focus-visible {
     padding: var(--section-padding-mobile);
   }
 
+  /* Full height overlay on mobile (no glassmorphism) */
+  .hero-content {
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    background: linear-gradient(
+      to bottom,
+      rgba(0, 0, 0, 0.5) 0%,
+      rgba(0, 0, 0, 0.7) 50%,
+      rgba(0, 0, 0, 0.5) 100%
+    );
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    max-width: none;
+    border-radius: 0;
+    border: none;
+    box-shadow: none;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 2rem;
+  }
+
+  .hero-content img {
+    margin-bottom: 1.5rem;
+  }
+
+  .hero h1 {
+    font-size: 2rem;
+    letter-spacing: 0.01em;
+    margin-bottom: 0.5rem;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
+  }
+
+  .hero-tagline {
+    font-size: 1.2rem;
+    letter-spacing: 0.03em;
+    margin-bottom: 1.25rem;
+  }
+
+  .hero p {
+    font-size: 1rem;
+    letter-spacing: 0.02em;
+    margin-bottom: 1.5rem;
+    padding: 0 1rem;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
+  }
+
   .header-inner {
     padding: 1rem 5%;
   }
