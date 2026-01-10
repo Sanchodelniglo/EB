@@ -394,14 +394,61 @@ nav a:hover {
   flex: 1;
 }
 
+.about-text p {
+  font-size: 1.05rem;
+  line-height: 1.9;
+  letter-spacing: 0.01em;
+  text-align: justify;
+}
+
+.about-text p strong {
+  color: var(--color-wood-dark);
+  font-weight: 600;
+}
+
+.about-text p:first-of-type::first-letter {
+  font-family: var(--font-serif);
+  font-size: 4.5rem;
+  float: left;
+  line-height: 0.8;
+  margin-right: 0.6rem;
+  margin-top: 0.1rem;
+  color: var(--color-olive);
+}
+
 .about-image {
   flex: 1;
   position: relative;
-  border-radius: 8px;
+  border-radius: 4px;
   overflow: hidden;
-  box-shadow: var(--shadow-large);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
   background: url('img/about.webp') center/cover no-repeat;
   height: 350px;
+  transition:
+    transform 0.5s var(--ease-out-expo),
+    box-shadow 0.5s var(--ease-out-expo);
+}
+
+.about-image::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  background: var(--color-olive);
+  opacity: 0;
+  transition: opacity 0.4s var(--ease-out-expo);
+  z-index: 1;
+}
+
+.about-image:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 16px 50px rgba(0, 0, 0, 0.15);
+}
+
+.about-image:hover::before {
+  opacity: 1;
 }
 
 /* ===== Services Section ===== */
