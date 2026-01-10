@@ -445,18 +445,20 @@
 
       // Use requestAnimationFrame for smoother animations
       this.filterAnimationId = requestAnimationFrame(() => {
+        // Collect items to show for staggered animation
+        const showItems = [];
+
         items.forEach(item => {
           const category = item.getAttribute('data-category');
           const shouldShow = filterId === 'all' || filterId === category;
 
           if (shouldShow) {
             item.style.display = 'block';
-            // Force reflow for smooth transition
-            item.offsetHeight;
-            item.style.opacity = '1';
+            item.offsetHeight; // Force reflow
+            showItems.push(item);
           } else {
+            item.style.transitionDelay = '0s';
             item.style.opacity = '0';
-            // Use transitionend for cleaner hide
             const handleTransitionEnd = () => {
               if (item.style.opacity === '0') {
                 item.style.display = 'none';
@@ -465,6 +467,16 @@
             };
             item.addEventListener('transitionend', handleTransitionEnd);
           }
+        });
+
+        // Staggered reveal for luxury effect
+        showItems.forEach((item, index) => {
+          item.style.transitionDelay = `${index * 0.05}s`;
+          item.style.opacity = '1';
+          // Reset delay after animation
+          setTimeout(() => {
+            item.style.transitionDelay = '0s';
+          }, 500 + index * 50);
         });
       });
     }
@@ -602,32 +614,43 @@
       const newIndex = this.currentIndex + direction;
       if (newIndex >= 0 && newIndex < this.portfolio.length) {
         this.currentIndex = newIndex;
-        this.updateModalContent();
+        this.updateModalContent(true);
       }
     }
 
-    updateModalContent() {
+    updateModalContent(isNavigation = false) {
       const item = this.portfolio[this.currentIndex];
       if (!item || !this.modalImage) return;
 
+      // Fade out first for smooth crossfade on navigation
       this.modalImage.classList.add('loading');
 
-      const img = new Image();
-      img.onload = () => {
-        if (this.modalImage) {
-          this.modalImage.src = img.src;
-          this.modalImage.classList.remove('loading');
-        }
+      const loadNewImage = () => {
+        const img = new Image();
+        img.onload = () => {
+          if (this.modalImage) {
+            this.modalImage.src = img.src;
+            this.modalImage.alt = `${item.title} - ${item.location}`;
+            // Small delay for smoother reveal
+            requestAnimationFrame(() => {
+              this.modalImage.classList.remove('loading');
+            });
+          }
+        };
+        img.onerror = () => {
+          console.error(`Failed to load image: ${item.image}`);
+          this.modalImage?.classList.remove('loading');
+        };
+        img.src = item.image;
       };
-      img.onerror = () => {
-        console.error(`Failed to load image: ${item.image}`);
-        this.modalImage?.classList.remove('loading');
-      };
-      img.src = item.image;
 
-      if (this.modalImage) {
-        this.modalImage.alt = `${item.title} - ${item.location}`;
+      // Delay load on navigation for smooth crossfade
+      if (isNavigation) {
+        setTimeout(loadNewImage, 150);
+      } else {
+        loadNewImage();
       }
+
       if (this.modalTitle) {
         this.modalTitle.textContent = item.title;
       }
@@ -881,10 +904,10 @@
       this.sections.forEach((section, index) => {
         section.style.cssText = `
           opacity: 0;
-          transform: translateY(30px);
+          transform: translateY(20px) scale(0.98);
           transition: opacity 0.8s cubic-bezier(0.19, 1, 0.22, 1),
                       transform 0.8s cubic-bezier(0.19, 1, 0.22, 1);
-          transition-delay: ${index * 0.05}s;
+          transition-delay: ${index * 0.08}s;
         `;
       });
     }
@@ -896,7 +919,7 @@
             if (entry.isIntersecting) {
               requestAnimationFrame(() => {
                 entry.target.style.opacity = '1';
-                entry.target.style.transform = 'translateY(0)';
+                entry.target.style.transform = 'translateY(0) scale(1)';
               });
               observer.unobserve(entry.target);
             }

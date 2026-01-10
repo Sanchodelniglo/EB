@@ -500,24 +500,26 @@ nav a:hover {
 }
 
 .filter-btn {
-  padding: 0.5rem 1.5rem;
-  border-radius: 30px;
-  font-weight: bold;
+  padding: 0.6rem 1.25rem;
+  border-radius: 2px;
+  border: 1.5px solid var(--color-olive);
+  font-size: 0.8rem;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
   transition:
     background-color var(--transition-default),
     color var(--transition-default),
-    transform 0.25s var(--ease-spring),
-    box-shadow var(--transition-default);
-  color: var(--color-wood-dark);
+    border-color var(--transition-default);
+  color: var(--color-olive);
   background-color: transparent;
 }
 
 .filter-btn.active,
 .filter-btn:hover {
   background-color: var(--color-olive);
-  color: var(--color-white);
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(106, 109, 89, 0.3);
+  color: var(--color-cream);
+  border-color: var(--color-olive);
 }
 
 .portfolio-grid {
@@ -528,12 +530,21 @@ nav a:hover {
 
 .portfolio-item {
   position: relative;
-  border-radius: 8px;
+  border-radius: 4px;
   overflow: hidden;
   aspect-ratio: 3/2;
   cursor: pointer;
-  transition: opacity 0.4s var(--ease-out-cubic);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  transition:
+    opacity 0.4s var(--ease-out-cubic),
+    transform 0.5s var(--ease-out-expo),
+    box-shadow 0.5s var(--ease-out-expo);
   contain: layout style paint;
+}
+
+.portfolio-item:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
 }
 
 /* Fallback for browsers without aspect-ratio support */
@@ -570,9 +581,9 @@ nav a:hover {
   height: 100%;
   background: linear-gradient(
     to top,
-    rgba(0, 0, 0, 0.8) 0%,
-    rgba(0, 0, 0, 0.4) 50%,
-    rgba(0, 0, 0, 0.2) 100%
+    rgba(20, 18, 15, 0.85) 0%,
+    rgba(20, 18, 15, 0.3) 60%,
+    transparent 100%
   );
   display: flex;
   flex-direction: column;
@@ -584,8 +595,21 @@ nav a:hover {
   transition: opacity 0.4s var(--ease-out-cubic);
 }
 
-.portfolio-overlay h3,
+.portfolio-overlay h3 {
+  font-family: var(--font-serif);
+  font-size: 1.25rem;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  transform: translateY(10px);
+  transition: transform 0.4s var(--ease-out-expo);
+}
+
 .portfolio-overlay p {
+  font-size: 0.8rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  opacity: 0.75;
+  margin-top: 0.25rem;
   transform: translateY(10px);
   transition: transform 0.4s var(--ease-out-expo);
 }
@@ -600,7 +624,7 @@ nav a:hover {
 }
 
 .portfolio-item:hover .portfolio-image {
-  transform: scale(1.1);
+  transform: scale(1.05);
 }
 
 /* ===== Modal Styles ===== */
@@ -1343,7 +1367,12 @@ nav a:focus-visible {
   /* Portfolio overlay always visible on touch devices */
   .portfolio-overlay {
     opacity: 1;
-    background: linear-gradient(to top, rgba(0, 0, 0, 0.85) 0%, rgba(0, 0, 0, 0.4) 50%, transparent 100%);
+    background: linear-gradient(
+      to top,
+      rgba(20, 18, 15, 0.9) 0%,
+      rgba(20, 18, 15, 0.4) 50%,
+      transparent 100%
+    );
     justify-content: flex-end;
     padding-bottom: 1.5rem;
   }
@@ -1351,6 +1380,11 @@ nav a:focus-visible {
   .portfolio-overlay h3,
   .portfolio-overlay p {
     transform: translateY(0);
+  }
+
+  /* Disable hover lift on touch */
+  .portfolio-item:hover {
+    transform: none;
   }
 
   /* Modal Mobile */
