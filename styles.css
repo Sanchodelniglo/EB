@@ -343,11 +343,11 @@ nav a:hover {
   padding: 1rem 2rem;
   background-color: var(--color-olive);
   color: var(--color-white);
-  font-weight: 600;
-  border-radius: 4px;
-  border: 1px solid rgba(0, 0, 0, 0.1);
+  font-weight: 500;
+  border-radius: 2px;
+  border: none;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  letter-spacing: 0.04em;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
   font-size: 0.85rem;
   transition:
@@ -423,27 +423,42 @@ nav a:hover {
 
 .service-card {
   background-color: var(--color-white);
-  border-radius: 8px;
+  border-radius: 4px;
   overflow: hidden;
-  box-shadow: var(--shadow-small);
-  border-left: 3px solid transparent;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
   transition:
     transform 0.4s var(--ease-out-expo),
-    box-shadow 0.4s var(--ease-out-expo),
-    border-color 0.4s var(--ease-out-expo);
+    box-shadow 0.4s var(--ease-out-expo);
   position: relative;
   contain: layout style paint;
 }
 
+.service-card::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  background: var(--color-olive);
+  opacity: 0;
+  transition: opacity 0.4s var(--ease-out-expo);
+  z-index: 1;
+}
+
 .service-card:hover {
-  transform: translateY(-8px);
-  box-shadow: var(--shadow-medium);
-  border-left-color: var(--color-wood-light);
+  transform: translateY(-6px);
+  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.12);
+}
+
+.service-card:hover::before {
+  opacity: 1;
 }
 
 .service-image-wrapper {
   overflow: hidden;
   height: 200px;
+  width: 100%;
 }
 
 .service-image {
@@ -459,7 +474,7 @@ nav a:hover {
 }
 
 .service-card:hover .service-image {
-  transform: scale(1.08);
+  transform: scale(1.04);
 }
 
 .service-content {
@@ -467,9 +482,18 @@ nav a:hover {
 }
 
 .service-content h3 {
-  font-size: 1.3rem;
+  font-family: var(--font-serif);
+  font-size: 1.2rem;
+  font-weight: 500;
+  letter-spacing: 0.02em;
   margin-bottom: 1rem;
-  color: var(--color-wood);
+  color: var(--color-wood-dark);
+}
+
+.service-content p {
+  font-size: 0.95rem;
+  line-height: 1.7;
+  opacity: 0.85;
 }
 
 /* Services CTA */
@@ -482,12 +506,17 @@ nav a:hover {
 }
 
 .services-cta h2 {
+  font-family: var(--font-serif);
+  font-weight: 500;
+  letter-spacing: 0.02em;
   margin-bottom: 1rem;
 }
 
 .services-cta p {
-  font-size: 1.2rem;
+  font-size: 1.1rem;
+  line-height: 1.8;
   margin-bottom: 1.5rem;
+  opacity: 0.85;
 }
 
 /* ===== Portfolio Section ===== */
