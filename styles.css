@@ -909,6 +909,7 @@ nav a:hover {
 .testimonials {
   background-color: var(--color-gray-light);
   position: relative;
+  max-width: unset;
 }
 
 .testimonials-inner {
@@ -1130,6 +1131,93 @@ nav a:hover {
   display: inline-block;
   box-sizing: border-box;
   animation: rotation 1s linear infinite;
+}
+
+/* ===== FAQ Section ===== */
+.faq {
+  background-color: var(--color-gray-light);
+  max-width: unset;
+}
+
+.faq-container {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.faq-item {
+  background: var(--color-white);
+  border-radius: 6px;
+  margin-bottom: 1.25rem;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
+  overflow: hidden;
+  border-left: 3px solid transparent;
+  transition: transform 0.4s var(--ease-out-expo),
+              box-shadow 0.4s var(--ease-out-expo),
+              border-color 0.3s ease;
+}
+
+.faq-item:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+}
+
+.faq-item[open] {
+  border-left-color: var(--color-olive);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+}
+
+.faq-question {
+  padding: 1.5rem 2rem;
+  cursor: pointer;
+  font-family: var(--font-serif);
+  font-size: 1.15rem;
+  font-weight: 600;
+  color: var(--color-wood-dark);
+  list-style: none;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  transition: color 0.3s ease;
+}
+
+.faq-item:hover .faq-question,
+.faq-item[open] .faq-question {
+  color: var(--color-olive-dark);
+}
+
+.faq-question::-webkit-details-marker {
+  display: none;
+}
+
+.faq-question::after {
+  content: '+';
+  font-size: 1.75rem;
+  font-weight: 200;
+  color: var(--color-olive);
+  transition: transform 0.4s var(--ease-out-expo),
+              color 0.3s ease;
+  flex-shrink: 0;
+}
+
+.faq-item:hover .faq-question::after {
+  color: var(--color-olive-dark);
+}
+
+.faq-item[open] .faq-question::after {
+  transform: rotate(45deg);
+}
+
+.faq-answer {
+  padding: 0 2rem 1.75rem;
+  padding-left: calc(2rem - 3px);
+}
+
+.faq-answer p {
+  font-size: 0.975rem;
+  line-height: 1.85;
+  color: var(--color-text);
+  text-align: justify;
 }
 
 /* ===== Footer ===== */
