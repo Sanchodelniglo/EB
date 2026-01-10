@@ -71,10 +71,9 @@ jobs:
       - name: Update asset references in HTML
         run: |
           for file in dist/*.html; do
-            # Update CSS reference
-            sed -i 's|href="styles.css"|href="styles.css"|g' "$file"
-            # Update JS reference
+            # Update JS references (both script src and preload href)
             sed -i 's|src="js/main.js"|src="main.js"|g' "$file"
+            sed -i 's|href="js/main.js"|href="main.js"|g' "$file"
           done
 
       - name: Copy static assets
