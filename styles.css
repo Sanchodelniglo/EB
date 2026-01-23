@@ -12,6 +12,8 @@
   --color-cream-dark: #F0EBE3;
   --color-gray-light: #F5F5F5;
   --color-gray: #777777;
+  --color-olive-dark: #545748;
+  --color-text: var(--color-wood-dark);
 
   /* Typography */
   --font-main: 'Work Sans', sans-serif;
@@ -1218,6 +1220,17 @@ nav a:hover {
   line-height: 1.85;
   color: var(--color-text);
   text-align: justify;
+}
+
+.faq-question:focus-visible {
+  outline: 2px solid var(--color-wood);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+.modal-nav-btn:focus-visible {
+  outline: 2px solid var(--color-white);
+  outline-offset: 2px;
 }
 
 /* ===== Footer ===== */

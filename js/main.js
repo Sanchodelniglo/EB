@@ -348,6 +348,17 @@
       const grid = dom.get('.services-grid');
       if (!grid) return;
 
+      // Check if services are pre-rendered in HTML (for SEO)
+      const existingCards = grid.querySelectorAll('.service-card');
+      if (existingCards.length > 0) {
+        // Services already rendered - just ensure images are set up correctly
+        existingCards.forEach(card => {
+          card.classList.add('loaded');
+        });
+        return;
+      }
+
+      // Fallback: render dynamically if HTML is empty
       const fragment = document.createDocumentFragment();
 
       this.data.services.forEach(service => {
@@ -368,7 +379,6 @@
         fragment.appendChild(card);
       });
 
-      grid.innerHTML = '';
       grid.appendChild(fragment);
 
       const images = grid.querySelectorAll('.service-image[data-src]');
@@ -399,6 +409,17 @@
       const grid = dom.get('.portfolio-grid');
       if (!grid) return;
 
+      // Check if portfolio is pre-rendered in HTML (for SEO)
+      const existingItems = grid.querySelectorAll('.portfolio-item');
+      if (existingItems.length > 0) {
+        // Portfolio already rendered - just ensure items are set up correctly
+        existingItems.forEach(item => {
+          item.classList.add('loaded');
+        });
+        return;
+      }
+
+      // Fallback: render dynamically if HTML is empty
       const fragment = document.createDocumentFragment();
 
       this.data.portfolio.forEach(item => {
@@ -419,7 +440,6 @@
         fragment.appendChild(portfolioItem);
       });
 
-      grid.innerHTML = '';
       grid.appendChild(fragment);
 
       const images = grid.querySelectorAll('.portfolio-image[data-src]');
@@ -516,6 +536,21 @@
         }
       });
 
+      // Keyboard support for portfolio items
+      document.addEventListener('keydown', e => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          const item = e.target.closest('.portfolio-item');
+          if (item) {
+            e.preventDefault();
+            const items = Array.from(document.querySelectorAll('.portfolio-item:not([style*="display: none"])'));
+            const index = items.indexOf(item);
+            if (index !== -1) {
+              this.openModal(index);
+            }
+          }
+        }
+      });
+
       // Modal controls
       this.closeBtn?.addEventListener('click', () => this.closeModal());
       this.prevBtn?.addEventListener('click', () => this.navigate(-1));
@@ -574,14 +609,9 @@
       // Store current focus to restore later
       this.previousActiveElement = document.activeElement;
 
-      // Get the clicked item's data to find its position in full portfolio
-      const visibleItems = Array.from(document.querySelectorAll('.portfolio-item:not([style*="display: none"])'));
-      const clickedItem = visibleItems[index];
-      const clickedCategory = clickedItem?.getAttribute('data-category');
-
       // Find the actual index in the full portfolio
-      const visiblePortfolio = this.portfolio.filter((item, i) => {
-        const currentFilter = document.querySelector('.filter-btn.active')?.getAttribute('data-filter') || 'all';
+      const currentFilter = document.querySelector('.filter-btn.active')?.getAttribute('data-filter') || 'all';
+      const visiblePortfolio = this.portfolio.filter((item) => {
         return currentFilter === 'all' || item.category === currentFilter;
       });
 
