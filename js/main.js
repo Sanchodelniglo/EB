@@ -394,7 +394,9 @@
       this.data.filters.forEach((filter, index) => {
         const btn = utils.createElement('button', `filter-btn ${index === 0 ? 'active' : ''}`, {
           'data-filter': filter.id,
-          'aria-pressed': index === 0 ? 'true' : 'false',
+          'role': 'tab',
+          'aria-selected': index === 0 ? 'true' : 'false',
+          'aria-controls': 'portfolio-grid',
           textContent: filter.label
         });
         btn.addEventListener('click', () => this.handleFilterClick(filter.id));
@@ -458,7 +460,7 @@
       document.querySelectorAll('.filter-btn').forEach(btn => {
         const isActive = btn.getAttribute('data-filter') === filterId;
         btn.classList.toggle('active', isActive);
-        btn.setAttribute('aria-pressed', isActive ? 'true' : 'false');
+        btn.setAttribute('aria-selected', isActive ? 'true' : 'false');
       });
 
       const items = document.querySelectorAll('.portfolio-item');
@@ -509,6 +511,7 @@
       this.currentIndex = 0;
       this.focusableElements = null;
       this.previousActiveElement = null;
+      this.scrollY = 0;
       this.initElements();
       this.bindEvents();
     }
@@ -623,7 +626,12 @@
       this.updateModalContent();
       this.modal.classList.add('active');
       this.modal.setAttribute('aria-hidden', 'false');
-      document.body.style.overflow = 'hidden';
+
+      // Prevent background scroll
+      this.scrollY = window.scrollY;
+      document.body.style.top = `-${this.scrollY}px`;
+      document.documentElement.classList.add('modal-open');
+      document.body.classList.add('modal-open');
 
       // Focus the close button for accessibility
       setTimeout(() => this.closeBtn?.focus(), 100);
@@ -634,7 +642,12 @@
 
       this.modal.classList.remove('active');
       this.modal.setAttribute('aria-hidden', 'true');
-      document.body.style.overflow = '';
+
+      // Restore background scroll
+      document.documentElement.classList.remove('modal-open');
+      document.body.classList.remove('modal-open');
+      document.body.style.top = '';
+      window.scrollTo(0, this.scrollY || 0);
 
       // Restore focus to the element that opened the modal
       this.previousActiveElement?.focus();

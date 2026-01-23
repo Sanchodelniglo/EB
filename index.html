@@ -284,13 +284,13 @@
           aria-label="Filtrer les réalisations">
           <!-- Filter buttons will be loaded dynamically -->
         </div>
-        <div class="portfolio-grid" role="list">
+        <div class="portfolio-grid" id="portfolio-grid" role="list">
           <div class="portfolio-item" data-category="cloture" role="listitem" tabindex="0">
             <img src="img/cloture-volige-saint-jean-d-illac.webp"
               alt="Clôture en volige bois Saint-Jean-d'Illac Gironde"
               class="portfolio-image"
               width="600"
-              height="400"
+              height="450"
               loading="lazy"
               decoding="async">
             <div class="portfolio-overlay">
@@ -303,7 +303,7 @@
               alt="Pergola en bois sur mesure Arcachon Gironde"
               class="portfolio-image"
               width="600"
-              height="400"
+              height="451"
               loading="lazy"
               decoding="async">
             <div class="portfolio-overlay">
@@ -316,7 +316,7 @@
               alt="Studio extension bois ossature Saint-Jean-d'Illac Gironde"
               class="portfolio-image"
               width="600"
-              height="400"
+              height="450"
               loading="lazy"
               decoding="async">
             <div class="portfolio-overlay">
@@ -329,7 +329,7 @@
               alt="Clôture et portail en bois Lège-Cap-Ferret Gironde"
               class="portfolio-image"
               width="600"
-              height="400"
+              height="450"
               loading="lazy"
               decoding="async">
             <div class="portfolio-overlay">
@@ -342,7 +342,7 @@
               alt="Extension maison d'architecte bois Arès Gironde"
               class="portfolio-image"
               width="600"
-              height="400"
+              height="450"
               loading="lazy"
               decoding="async">
             <div class="portfolio-overlay">
@@ -355,7 +355,7 @@
               alt="Terrasse en bois exotique piscine Saint-Médard-en-Jalles Gironde"
               class="portfolio-image"
               width="600"
-              height="400"
+              height="450"
               loading="lazy"
               decoding="async">
             <div class="portfolio-overlay">
@@ -368,7 +368,7 @@
               alt="Terrasse et clôture piscine bois Saint-Médard-en-Jalles Gironde"
               class="portfolio-image"
               width="600"
-              height="400"
+              height="450"
               loading="lazy"
               decoding="async">
             <div class="portfolio-overlay">
@@ -381,7 +381,7 @@
               alt="Pergola avec persiennes bois Saint-Médard-en-Jalles Gironde"
               class="portfolio-image"
               width="600"
-              height="400"
+              height="450"
               loading="lazy"
               decoding="async">
             <div class="portfolio-overlay">
@@ -394,7 +394,7 @@
               alt="Terrasse multi-niveaux bois Le Haillan Gironde"
               class="portfolio-image"
               width="600"
-              height="400"
+              height="450"
               loading="lazy"
               decoding="async">
             <div class="portfolio-overlay">
@@ -413,7 +413,7 @@
           aria-label="Fermer">&times;</button>
         <div class="modal-content">
           <div class="modal-image-container">
-            <img class="modal-image" id="modalImage" alt="Image du portfolio" decoding="async">
+            <img class="modal-image" id="modalImage" alt="Image du portfolio" width="1920" height="1440" decoding="async">
           </div>
           <div class="modal-controls">
             <button class="modal-nav-btn" id="prevBtn"
@@ -435,18 +435,18 @@
           <h2 class="section-title">Ce que nos clients disent</h2>
           <div class="testimonials-slider" role="region"
             aria-label="Carrousel de témoignages" aria-live="polite">
-            <div class="testimonial">
+            <div class="testimonial" id="testimonial-panel" role="tabpanel">
               <!-- Testimonial content will be loaded dynamically -->
             </div>
           </div>
           <div class="slider-nav" role="tablist"
             aria-label="Navigation des témoignages">
             <button class="slider-dot active" role="tab" aria-selected="true"
-              aria-label="Témoignage 1"></button>
+              aria-label="Témoignage 1" aria-controls="testimonial-panel"></button>
             <button class="slider-dot" role="tab" aria-selected="false"
-              aria-label="Témoignage 2"></button>
+              aria-label="Témoignage 2" aria-controls="testimonial-panel"></button>
             <button class="slider-dot" role="tab" aria-selected="false"
-              aria-label="Témoignage 3"></button>
+              aria-label="Témoignage 3" aria-controls="testimonial-panel"></button>
           </div>
         </div>
       </section>
