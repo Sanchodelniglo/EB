@@ -335,7 +335,7 @@
       this.data = data;
       this.lazyLoader = new LazyImageLoader();
       this.currentFilter = 'all';
-      this.filterAnimationId = null;
+      this.filterTimeout = null;
     }
 
     init() {
@@ -449,9 +449,8 @@
     }
 
     handleFilterClick(filterId) {
-      // Cancel any pending animation
-      if (this.filterAnimationId) {
-        cancelAnimationFrame(this.filterAnimationId);
+      if (this.filterTimeout) {
+        clearTimeout(this.filterTimeout);
       }
 
       this.currentFilter = filterId;
@@ -463,44 +462,44 @@
         btn.setAttribute('aria-selected', isActive ? 'true' : 'false');
       });
 
+      const grid = document.querySelector('.portfolio-grid');
       const items = document.querySelectorAll('.portfolio-item');
 
-      // Use requestAnimationFrame for smoother animations
-      this.filterAnimationId = requestAnimationFrame(() => {
-        // Collect items to show for staggered animation
-        const showItems = [];
+      // Phase 1: Fade out all visible items together
+      items.forEach(item => {
+        item.style.transition = 'opacity 0.2s ease';
+        item.style.transitionDelay = '0s';
+        item.style.opacity = '0';
+      });
 
+      // Phase 2: Swap visibility while everything is invisible
+      this.filterTimeout = setTimeout(() => {
+        items.forEach(item => item.classList.remove('featured'));
+
+        const showItems = [];
         items.forEach(item => {
           const category = item.getAttribute('data-category');
           const shouldShow = filterId === 'all' || filterId === category;
-
-          if (shouldShow) {
-            item.style.display = 'block';
-            item.offsetHeight; // Force reflow
-            showItems.push(item);
-          } else {
-            item.style.transitionDelay = '0s';
-            item.style.opacity = '0';
-            const handleTransitionEnd = () => {
-              if (item.style.opacity === '0') {
-                item.style.display = 'none';
-              }
-              item.removeEventListener('transitionend', handleTransitionEnd);
-            };
-            item.addEventListener('transitionend', handleTransitionEnd);
-          }
+          item.style.display = shouldShow ? '' : 'none';
+          if (shouldShow) showItems.push(item);
         });
 
-        // Staggered reveal for luxury effect
-        showItems.forEach((item, index) => {
-          item.style.transitionDelay = `${index * 0.05}s`;
-          item.style.opacity = '1';
-          // Reset delay after animation
-          setTimeout(() => {
-            item.style.transitionDelay = '0s';
-          }, 500 + index * 50);
+        // Featured layout only on "all" filter
+        if (filterId === 'all' && showItems.length > 0) {
+          showItems[0].classList.add('featured');
+          grid.classList.add('grid-featured');
+        } else {
+          grid.classList.remove('grid-featured');
+        }
+
+        // Phase 3: Staggered fade in
+        requestAnimationFrame(() => {
+          showItems.forEach((item, index) => {
+            item.style.transition = `opacity 0.4s ease ${index * 0.06}s`;
+            item.style.opacity = '1';
+          });
         });
-      });
+      }, 200);
     }
   }
 
@@ -923,55 +922,97 @@
     }
   }
 
-  // Scroll Animation Handler with feature detection
+  // Scroll Reveal & Parallax Handler
   class ScrollAnimationHandler {
     constructor() {
-      this.sections = document.querySelectorAll('section:not(.hero)');
+      this.heroBg = document.querySelector('.hero-bg');
+      this.ticking = false;
       this.init();
     }
 
     init() {
       if (utils.supportsIntersectionObserver()) {
-        this.setupInitialStyles();
-        this.observeSections();
-      } else {
-        // Fallback: show all sections immediately
-        this.sections.forEach(section => {
-          section.style.opacity = '1';
-          section.style.transform = 'translateY(0)';
-        });
+        this.tagElements();
+        this.observeReveals();
+      }
+      if (this.heroBg) {
+        this.initParallax();
       }
     }
 
-    setupInitialStyles() {
-      this.sections.forEach((section, index) => {
-        section.style.cssText = `
-          opacity: 0;
-          transform: translateY(20px) scale(0.98);
-          transition: opacity 0.8s cubic-bezier(0.19, 1, 0.22, 1),
-                      transform 0.8s cubic-bezier(0.19, 1, 0.22, 1);
-          transition-delay: ${index * 0.08}s;
-        `;
+    tagElements() {
+      // Section titles
+      document.querySelectorAll('section:not(.hero) .section-title').forEach(el => {
+        el.classList.add('reveal');
       });
+
+      // About: text left, image right
+      const aboutText = document.querySelector('.about-text');
+      const aboutImage = document.querySelector('.about-image');
+      if (aboutText) aboutText.classList.add('reveal-left');
+      if (aboutImage) aboutImage.classList.add('reveal-right');
+
+      // Service cards: staggered
+      const servicesGrid = document.querySelector('.services-grid');
+      if (servicesGrid) servicesGrid.classList.add('reveal-stagger');
+
+      // Portfolio filter + grid: staggered
+      const portfolioFilter = document.querySelector('.portfolio-filter');
+      if (portfolioFilter) portfolioFilter.classList.add('reveal');
+      const portfolioGrid = document.querySelector('.portfolio-grid');
+      if (portfolioGrid) portfolioGrid.classList.add('reveal-stagger');
+
+      // Services CTA
+      const servicesCta = document.querySelector('.services-cta');
+      if (servicesCta) servicesCta.classList.add('reveal');
+
+      // Testimonials
+      const testimonialsInner = document.querySelector('.testimonials-inner');
+      if (testimonialsInner) testimonialsInner.classList.add('reveal');
+
+      // FAQ items: staggered
+      const faqContainer = document.querySelector('.faq-container');
+      if (faqContainer) faqContainer.classList.add('reveal-stagger');
+
+      // Contact: form left, info right
+      const contactForm = document.querySelector('.contact-form');
+      const contactInfo = document.querySelector('.contact-info');
+      if (contactForm) contactForm.classList.add('reveal-left');
+      if (contactInfo) contactInfo.classList.add('reveal-right');
     }
 
-    observeSections() {
+    observeReveals() {
+      const targets = document.querySelectorAll('.reveal, .reveal-left, .reveal-right, .reveal-stagger');
+
       const observer = new IntersectionObserver(
         entries => {
           entries.forEach(entry => {
             if (entry.isIntersecting) {
-              requestAnimationFrame(() => {
-                entry.target.style.opacity = '1';
-                entry.target.style.transform = 'translateY(0) scale(1)';
-              });
+              entry.target.classList.add('visible');
               observer.unobserve(entry.target);
             }
           });
         },
-        { threshold: 0.1, rootMargin: '-50px' }
+        { threshold: 0.12, rootMargin: '-40px' }
       );
 
-      this.sections.forEach(section => observer.observe(section));
+      targets.forEach(el => observer.observe(el));
+    }
+
+    initParallax() {
+      const onScroll = () => {
+        if (!this.ticking) {
+          requestAnimationFrame(() => {
+            const scrollY = window.scrollY;
+            if (scrollY < window.innerHeight) {
+              this.heroBg.style.transform = `translateY(${scrollY * 0.35}px)`;
+            }
+            this.ticking = false;
+          });
+          this.ticking = true;
+        }
+      };
+      window.addEventListener('scroll', onScroll, { passive: true });
     }
   }
 
