@@ -20,29 +20,29 @@
     services: [
       {
         id: 'cloture-bois',
-        title: 'Clôture Bois',
-        description: 'Conception et réalisation de clôtures en bois sur mesure, combinant savoir-faire traditionnel et solutions modernes pour des installations durables et esthétiques.',
+        title: 'Clôture Bois Sur Mesure',
+        description: 'Conception et pose de clôtures bois sur mesure en Gironde : volige, ajourée, persiennée, clôture piscine. Du portail au brise-vue, des solutions durables et esthétiques pour votre jardin.',
         image: 'img/cloture-volige-saint-jean-d-illac.webp',
         category: 'cloture'
       },
       {
         id: 'terrasses-bois',
-        title: 'Terrasses en bois',
-        description: 'Création de terrasses uniques adaptées à votre espace extérieur, avec un large choix d\'essences de bois pour un résultat à la fois durable et élégant.',
+        title: 'Terrasse Bois & Terrasse Piscine',
+        description: 'Création de terrasses bois sur mesure : terrasse piscine, terrasse sur pilotis, terrasse multi-niveaux. Pin traité ou bois exotique selon vos envies et votre budget.',
         image: 'img/terrasse-piscine.webp',
         category: 'terrasse'
       },
       {
         id: 'extensions-bois',
-        title: 'Extensions bois',
-        description: 'Agrandissement de votre espace de vie avec des extensions en ossature bois, alliant performance thermique et intégration parfaite à votre habitat existant.',
+        title: 'Extension & Abri Bois',
+        description: 'Agrandissement en ossature bois, studio de jardin, carport et abri bois sur mesure. Performance thermique et intégration architecturale pour votre habitat en Gironde.',
         image: 'img/extension.webp',
         category: 'extension'
       },
       {
         id: 'pergolas',
-        title: 'Pergolas',
-        description: 'Pergolas sur mesure pour créer des espaces extérieurs élégants et ombragés. Nos conceptions allient esthétisme, durabilité et adaptation parfaite à votre cadre de vie.',
+        title: 'Pergola Bois Sur Mesure',
+        description: 'Pergolas bois adossées ou autoportées, avec persiennes ou toile rétractable. Créez un espace extérieur élégant et ombragé, adapté au climat girondin.',
         image: 'img/pergola.webp',
         category: 'pergola'
       }

@@ -4,9 +4,25 @@
     <!-- Page d'accueil -->
     <url>
         <loc>https://elegance-bois.fr/</loc>
-        <lastmod>2026-01-23</lastmod>
+        <lastmod>2026-04-25</lastmod>
         <changefreq>weekly</changefreq>
         <priority>1.0</priority>
+    </url>
+
+    <!-- Mentions légales -->
+    <url>
+        <loc>https://elegance-bois.fr/mentions-legales.html</loc>
+        <lastmod>2026-01-23</lastmod>
+        <changefreq>yearly</changefreq>
+        <priority>0.3</priority>
+    </url>
+
+    <!-- Politique de confidentialité -->
+    <url>
+        <loc>https://elegance-bois.fr/politique-confidentialite.html</loc>
+        <lastmod>2026-01-23</lastmod>
+        <changefreq>yearly</changefreq>
+        <priority>0.3</priority>
     </url>
 
 </urlset>
