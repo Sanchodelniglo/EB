@@ -1000,12 +1000,16 @@
     }
 
     initParallax() {
+      const header = document.querySelector('header');
       const onScroll = () => {
         if (!this.ticking) {
           requestAnimationFrame(() => {
             const scrollY = window.scrollY;
-            if (scrollY < window.innerHeight) {
+            if (this.heroBg && scrollY < window.innerHeight) {
               this.heroBg.style.transform = `translateY(${scrollY * 0.35}px)`;
+            }
+            if (header) {
+              header.classList.toggle('scrolled', scrollY > 40);
             }
             this.ticking = false;
           });
@@ -1013,6 +1017,7 @@
         }
       };
       window.addEventListener('scroll', onScroll, { passive: true });
+      onScroll();
     }
   }
 
