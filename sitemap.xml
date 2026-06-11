@@ -4,9 +4,69 @@
     <!-- Page d'accueil -->
     <url>
         <loc>https://elegance-bois.fr/</loc>
-        <lastmod>2026-04-25</lastmod>
+        <lastmod>2026-06-11</lastmod>
         <changefreq>weekly</changefreq>
         <priority>1.0</priority>
+    </url>
+
+    <!-- Pages locales Clôture -->
+    <url>
+        <loc>https://elegance-bois.fr/cloture-bois-saint-jean-d-illac.html</loc>
+        <lastmod>2026-06-11</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.9</priority>
+    </url>
+    <url>
+        <loc>https://elegance-bois.fr/cloture-bois-pessac.html</loc>
+        <lastmod>2026-06-11</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.9</priority>
+    </url>
+    <url>
+        <loc>https://elegance-bois.fr/cloture-bois-merignac.html</loc>
+        <lastmod>2026-06-11</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.9</priority>
+    </url>
+
+    <!-- Pages locales Terrasse -->
+    <url>
+        <loc>https://elegance-bois.fr/terrasse-bois-saint-jean-d-illac.html</loc>
+        <lastmod>2026-06-11</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.9</priority>
+    </url>
+    <url>
+        <loc>https://elegance-bois.fr/terrasse-bois-pessac.html</loc>
+        <lastmod>2026-06-11</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.9</priority>
+    </url>
+    <url>
+        <loc>https://elegance-bois.fr/terrasse-bois-merignac.html</loc>
+        <lastmod>2026-06-11</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.9</priority>
+    </url>
+
+    <!-- Pages locales Pergola -->
+    <url>
+        <loc>https://elegance-bois.fr/pergola-bois-saint-jean-d-illac.html</loc>
+        <lastmod>2026-06-11</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.9</priority>
+    </url>
+    <url>
+        <loc>https://elegance-bois.fr/pergola-bois-pessac.html</loc>
+        <lastmod>2026-06-11</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.9</priority>
+    </url>
+    <url>
+        <loc>https://elegance-bois.fr/pergola-bois-merignac.html</loc>
+        <lastmod>2026-06-11</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.9</priority>
     </url>
 
     <!-- Mentions légales -->
